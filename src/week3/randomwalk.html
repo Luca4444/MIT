@@ -1,0 +1,83 @@
+<link rel="stylesheet" type="text/css" href="mystyle.css" />
+<body style="background: #c8d9f3">
+  <script src="ball.js"></script>
+  <script>
+    const size = 30; // size of ball
+    const x = []; // position
+    const y = [];
+    const velocity_x = [];
+    const velocity_y = [];
+    const balls = []; // array to hold all free balls
+    let speed = 0; // wind speed
+    const stepSize = 8; // step size every update
+    const gravity = 2;
+
+    function getRandom(step) {
+      // return value between +step and -step
+      return Math.random() * 2 * step - step;
+    }
+
+    function chckfloor(i){
+      if (y[i] < 400) {
+        y[i] += getRandom(stepSize) + gravity;
+        x[i] += getRandom(stepSize) + speed;
+      }
+      if (y[i] > 400) {
+        //makeBall(x[i], y[i], 'orange', 0,0,1)
+        velocity_y[i] = 0;
+        velocity_x[i] = 0;
+        y[i] = 400;
+        //balls[i].style.backgroundColor = 'white';
+      }
+    }
+    function update() {
+      // the wind speed is added to x direction
+      for (let i = 0; i < balls.length; i++) {
+
+        chckfloor(i);
+        balls[i].style.left = x[i];
+        balls[i].style.top = y[i];
+        console.log(balls.length)
+        console.log(i)
+      }
+      setTimeout(update, 50);
+
+    }
+    function factory(total) {
+      for (let i = 0; i < total; i++) {
+        makeBall(100, 300, "blue");
+        x[i] = 100;
+        y[i] = 300;
+      }
+    }
+    function rancolor(min,max){
+      let colors = ['red','blue','green','yellow']
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return colors[Math.floor(Math.random() * (max - min + 1)) + min]
+    }
+    function manyballs(amount){
+
+
+      for(let i=0;i<amount;i++){
+        makeBall(50, 100, rancolor(0,3));
+      }
+    }
+    // show how to generate a fixed ball
+    manyballs(15);
+    speed = 5;
+    update();
+  </script>
+  <div class="svg-container">
+    <svg height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <rect
+
+        width="2000"
+        height="800"
+        stroke="lightgreen"
+        fill="lightgreen"
+        stroke-width="5"
+      />
+    </svg>
+  </div>
+</body>
