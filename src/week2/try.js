@@ -1,11 +1,10 @@
 
+function sliceElements(givenArray) {
 
-function calculator(value1, oper, value2){
-    switch (oper){
-        case"+":
-            console.log(value1 + value2);
-            break
-    }
+    return givenArray.slice(givenArray.length-3, givenArray.length);
 }
 
-calculator(3,'+',2);
+
+var a = [1,2,3,4,5,6,7,8];
+
+console.log(sliceElements(a));
