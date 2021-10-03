@@ -1,5 +1,5 @@
-import {hello, funcs, f1, f2} from 'module';
-document.getElementById("app").innerHTML = hello;
+import {hello, funcs, f1, f2} from './module.js';
+document.getElementById('app').innerHTML = hello;
 funcs.foo();
 funcs.bar();
 f1("Goodnight");
