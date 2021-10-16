@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grid</title>
+    <style>
+        .on{
+            background: orange;
+        }                
+        .content{
+            display: grid;
+            grid-template-columns: repeat(10,1fr);
+            grid-template-rows: repeat(10,1fr);
+            gap: 5px;
+        }
+        div{
+            padding: 10px;
+            text-align: center;
+            border-style: solid;
+            font-size: 1em;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="createGrid()">CREATE GRID</button>    
+    <button onclick="move()" style="margin-bottom: 10px;">MOVE</button>
+    <main class="content" id="target">
+    </main>
+    <script>
+        var x=1
+        function toggle(){
+            if (x===101){
+                x=1
+            }
+            let div = x.toString();
+            const element = document.getElementById(div);
+            element.classList.toggle('on');
+        }
+
+        function move(){
+            setInterval(()=>{
+                toggle()
+                setTimeout(()=>{toggle();x += 1}, 200)},300
+            )
+        }
+
+        function createGrid(){
+            for (let i=1; i<101; i++) {
+                var innerDiv = document.createElement('div');
+                innerDiv.id = i.toString();
+                innerDiv.innerHTML = i.toString();
+                document.getElementById('target').appendChild(innerDiv);
+            }
+        }
+
+    </script>
+</body>
+</html>

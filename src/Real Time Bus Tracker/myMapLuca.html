@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Bus Tracker</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
+
+<style>
+  body { margin: 0; padding: 0; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  .map-overlay{
+      position: absolute;
+      left:0;
+      padding: 10px;
+      display: grid;
+      grid-template-rows: repeat(10,1fr);
+      font-size: 20px;
+      font-family: 'Rubik', sans-serif;
+  }
+  button{
+      margin-top: 5px;
+      margin-bottom: 5px;
+
+
+  }
+  #title{
+
+      left: 40%;
+      position: absolute;
+      font-size: 40px;
+      padding: 5px 15px;
+      font-family: 'Rubik', sans-serif;
+      margin-top: 5px;
+
+  }
+
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div id="title" class="w3-card w3-light-green w3-round">Bus Tracker</div>
+<div id="buttons" class="map-overlay top">
+    <button class="w3-button w3-orange w3-round" onclick="buttons()">Track Buses</button>
+
+</div>
+
+<script>
+
+    mapboxgl.accessToken =  'pk.eyJ1IjoibHVjYWI0IiwiYSI6ImNrdXJ2d2l0cDBuYWcybmxudGc4bnh3ankifQ.nCbHl0k6PQ4wAnhZeovYWQ';
+
+    var map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-71.104081,42.365554],
+        zoom: 12
+    });
+
+    var marker = new mapboxgl.Marker()
+        //.setLngLat([firstLocation[0]["attributes"]["latitude"],firstLocation[0]["attributes"]["longitude"]])
+        .setLngLat([-71.091542,42.358862])
+        .addTo(map);
+
+    async function buttons(){
+        const locations = await getBusLocations();
+        for (let i=0; i<locations.length; i++){
+            var button = document.createElement('button');
+            button.id = i.toString();
+            button.innerHTML = "Bus: " + locations[i]["attributes"]["label"];
+            button.setAttribute("onclick", "clearTimeout(cycle);run("+i.toString()+")");
+            button.setAttribute('class', "w3-button w3-blue w3-round w3-hover-white")
+
+            document.getElementById('buttons').appendChild(button);
+        }
+    }
+
+
+    var cycle;
+
+
+    async function run(bus){
+        // get bus data
+        console.log(bus)
+        const locations = await getBusLocations();
+        console.log(new Date());
+        console.log(locations[bus]["attributes"]["label"]);
+        //console.log(locations[bus]["attributes"]["latitude"]);
+        //console.log(locations[bus]["attributes"]["longitude"]);
+        marker.setLngLat([locations[bus]["attributes"]["longitude"], locations[bus]["attributes"]["latitude"]]);
+
+        // timer
+        cycle = setTimeout(function (){run(bus)}, 15000);
+    }
+
+    async function getBusLocations(){
+        const url = 'https://api-v3.mbta.com/vehicles?filter[route]=1&include=trip';
+        const response = await fetch(url);
+        const json     = await response.json();
+        return json.data;
+    }
+
+
+
+
+
+</script>
+</body>
+</html>
