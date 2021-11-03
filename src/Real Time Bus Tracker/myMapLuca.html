@@ -48,7 +48,7 @@
 
 <div id="title" class="w3-card w3-light-green w3-round">Bus Tracker</div>
 <div id="buttons" class="map-overlay top">
-    <button class="w3-button w3-orange w3-round" onclick="buttons()">Track Buses</button>
+    <button class="w3-button w3-orange w3-round" id='trackbuses' onclick="buttons()">Track Buses</button>
 
 </div>
 
@@ -70,12 +70,14 @@
 
     async function buttons(){
         const locations = await getBusLocations();
+        document.getElementById('trackbuses').onclick=null;
         for (let i=0; i<locations.length; i++){
             var button = document.createElement('button');
             button.id = i.toString();
             button.innerHTML = "Bus: " + locations[i]["attributes"]["label"];
             button.setAttribute("onclick", "clearTimeout(cycle);run("+i.toString()+")");
             button.setAttribute('class', "w3-button w3-blue w3-round w3-hover-white")
+
 
             document.getElementById('buttons').appendChild(button);
         }
@@ -93,6 +95,7 @@
         console.log(locations[bus]["attributes"]["label"]);
         //console.log(locations[bus]["attributes"]["latitude"]);
         //console.log(locations[bus]["attributes"]["longitude"]);
+        document.getElementById('title').innerHTML = "Bus: " + locations[bus]["attributes"]["label"];
         marker.setLngLat([locations[bus]["attributes"]["longitude"], locations[bus]["attributes"]["latitude"]]);
 
         // timer
