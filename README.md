@@ -5,6 +5,6 @@
 ##### We have worked with Javascript and HTML, so far we have seen projectiles, animations, and other basic coding concepts.
 
 ## Roadmap of Future Improvements
-#### Tic-Tac-Toe
+### Tic-Tac-Toe
 ##### Disabling Square: Making the button disabled once its clicked. 
 ##### Play again: make react re-render the whole board
